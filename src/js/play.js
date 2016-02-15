@@ -31,8 +31,8 @@ Game.Play.prototype = {
 		// this.puzzle = new Puzzle(this.game, 'bg1', 5);
 		// this.puzzle.destroy();
 		// this.puzzle = new Puzzle(this.game, 'cameras', 3);
-		this.puzzle = new Puzzle(this.game, 'cat', 3);
-    this.puzzle.scramble();
+		this.puzzle = new Puzzle(this.game, 'cat', 5);
+    // this.puzzle.scramble(5, ['down','right']);
 		// this.puzzle = new Puzzle(this.game, 'amsterdam', 3);
 
     // // Music
@@ -54,6 +54,11 @@ Game.Play.prototype = {
     this.twitterButton.visible = false;
   },
   update: function() {
+      // this.game.input.onUp.add(function() {
+      //   if (this.puzzle.solved == false && this.puzzle.scrambled == false) {
+      //     this.puzzle.scramble(5, ['down','right']);
+      //   }
+      // },this);
 
     // // Toggle Music
     // muteKey.onDown.add(this.toggleMute, this);
