@@ -37,84 +37,18 @@ Game.Play.prototype = {
     var tile_width = w/square;
     var tile_height = h/square;
 
-    this.arrowbmd = this.game.add.bitmapData(tile_width,tile_height);
-    this.arrowbmd.ctx.clearRect(0,0,tile_width,tile_height);
-    this.arrowbmd.ctx.strokeStyle = '#FFF';
-    this.arrowbmd.ctx.fillStyle = '#000';
-    this.arrowbmd.ctx.lineWidth = 2;
-    this.arrowbmd.ctx.fill();
-    this.arrowbmd.ctx.beginPath();
-    this.arrowbmd.ctx.moveTo(tile_width*1/2,0);
-    this.arrowbmd.ctx.lineTo(0,tile_height*1/2);
-    this.arrowbmd.ctx.lineTo(tile_width*1/4,tile_height*1/2);
-    this.arrowbmd.ctx.lineTo(tile_width*1/4,tile_height);
-    this.arrowbmd.ctx.lineTo(tile_width*3/4,tile_height);
-    this.arrowbmd.ctx.lineTo(tile_width*3/4,tile_height*1/2);
-    this.arrowbmd.ctx.lineTo(tile_width,tile_height*1/2);
-    this.arrowbmd.ctx.fill();
-
     var pieces = [];
 
     for (var i = 0; i < square;i++) {
       for (var j = 0; j < square;j++) {
-        var img = this.game.make.bitmapData(160, 100);
-        area = new Phaser.Rectangle(j*tile_width, i*tile_height, 160, 100);
-        img.copyRect('bg1', area, 0, 0);
-        img.update();
+        // var piece = new PuzzlePiece(this.game, Game.w/2, Game.h/2, j, i, tile_width, tile_height,square);
+        var piece = new PuzzlePiece(this.game, 100+j*tile_width, 100+i*tile_height, j, i, tile_width, tile_height,square);
 
-        // var img = this.game.make.bitmapData(800, 500);
-        // img.draw(this.game.cache.getImage('bg1'), 0, 0);
-        // img.update();
-
-        // var bmd = this.game.make.bitmapData(800, 500);
-        // bmd.addToWorld();
-        // area = new Phaser.Rectangle(j*tile_width, i*tile_height, 160, 100);
-        // bmd.copyRect('bg1', area, j*tile_width , i*tile_height);
-        // bmd.copyRect('bg1', area, j*tile_width , i*tile_height);
-
-        var mask = this.game.make.bitmapData(160, 100);
-        mask.copyRect(this.arrowbmd, area, 160, 100);
-
-        var bmd = this.game.make.bitmapData(160, 100);
-        bmd.alphaMask(img, this.arrowbmd);
-        // bmd.alphaMask(img, mask);
-
-
-
-        var b = game.add.sprite(Game.w/2, Game.h/2, bmd);
-        // var b = game.add.sprite(Game.w/2, Game.h/2, img);
-        b.inputEnabled = true;
-        b.input.enableDrag(true);
-        // b.crop(area);
-        pieces.push(b);
+        pieces.push(piece);
 
       }
     }
     
-    
-    // OLD
-    // var square = 5;
-    // var w = 800;
-    // var h = 500;
-    //
-    // var tile_width = w/square;
-    // var tile_height = h/square;
-    // var pieces = [];
-    //
-    // for (var i = 0; i < square;i++) {
-    //   for (var j = 0; j < square;j++) {
-    //     var bmd = this.game.make.bitmapData(800, 500);
-    //     bmd.addToWorld();
-    //     area = new Phaser.Rectangle(j*tile_width, i*tile_height, 160, 100);
-    //     bmd.copyRect('bg1', area, j*tile_width , i*tile_height);
-    //     var b = game.add.sprite(Game.w/2, Game.h/2, bmd);
-    //     b.inputEnabled = true;
-    //     b.input.enableDrag(true);
-    //     b.crop(area);
-    //     pieces.push(b);
-    //   }
-    // }
-
 
     // // Music
     // this.music = this.game.add.sound('music');
