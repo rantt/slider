@@ -12,7 +12,6 @@
 
 // var musicOn = true;
 
-
 var wKey;
 var aKey;
 var sKey;
@@ -29,26 +28,10 @@ Game.Play.prototype = {
 
     this.game.stage.backgroundColor = '#2d2d2d';
 
-
-    var square = 5;
-    var w = 800;
-    var h = 500;
-
-    var tile_width = w/square;
-    var tile_height = h/square;
-
-    var pieces = [];
-
-    for (var i = 0; i < square;i++) {
-      for (var j = 0; j < square;j++) {
-        // var piece = new PuzzlePiece(this.game, Game.w/2, Game.h/2, j, i, tile_width, tile_height,square);
-        var piece = new PuzzlePiece(this.game, 100+j*tile_width, 100+i*tile_height, j, i, tile_width, tile_height,square);
-
-        pieces.push(piece);
-
-      }
-    }
-    
+		// this.puzzle = new Puzzle(this.game, 'bg1', 5);
+		// this.puzzle.destroy();
+		// this.puzzle = new Puzzle(this.game, 'cameras', 4);
+		this.puzzle = new Puzzle(this.game, 'amsterdam', 3);
 
     // // Music
     // this.music = this.game.add.sound('music');
@@ -68,7 +51,6 @@ Game.Play.prototype = {
     this.twitterButton.anchor.set(0.5);
     this.twitterButton.visible = false;
   },
-
   update: function() {
 
     // // Toggle Music

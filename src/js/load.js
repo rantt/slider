@@ -50,7 +50,9 @@ Game.Load.prototype = {
     //Load button for twitter
     this.game.load.image('twitter','assets/images/twitter.png');
 
-    var bg1 = this.game.load.image('bg1', 'assets/images/bg1.jpg');
+    this.game.load.image('bg1', 'assets/images/bg1.jpg');
+    this.game.load.image('cameras', 'assets/images/cameras.jpg');
+    this.game.load.image('amsterdam', 'assets/images/amsterdam.png');
 
     // Music Track
     // this.game.load.audio('music','soundtrack.mp3');
