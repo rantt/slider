@@ -20,10 +20,10 @@ Game.Boot.prototype = {
     this.game.load.bitmapFont('minecraftia', 'assets/fonts/font.png', 'assets/fonts/font.xml'); //load default font
 
 
-    // //Scale Image to Fit Window
-    // this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-    // this.game.scale.maxHeight = window.innerHeight;
-    // this.game.scale.maxWidth = window.innerHeight*(Game.w/Game.h);
+    //Scale Image to Fit Window
+    this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+    this.game.scale.maxHeight = window.innerHeight;
+    this.game.scale.maxWidth = window.innerHeight*(Game.w/Game.h);
 
   },
   create: function() {
@@ -53,6 +53,7 @@ Game.Load.prototype = {
     this.game.load.image('bg1', 'assets/images/bg1.jpg');
     this.game.load.image('cameras', 'assets/images/cameras.jpg');
     this.game.load.image('amsterdam', 'assets/images/amsterdam.png');
+    this.game.load.image('cat', 'assets/images/cat.png');
 
     // Music Track
     // this.game.load.audio('music','soundtrack.mp3');

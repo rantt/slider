@@ -4,19 +4,22 @@ function rand (min, max) {
 
 var Puzzle = function(game, pic, square) {
     this.game = game;
+    this.pic = pic;
+    this.square = square;
 
     this.solved = false;
-
     this.rndAmount = 1;
-    this.pic = pic;
 
-    this.square = square;
+    //load source image to get image height/width properties
     var src_image = this.game.add.image(0, 0, pic);
     src_image.visible = false;
+
 
     var w = src_image.width;
     var h = src_image.height;
 
+    this.offsetX = (Game.w - w)/2; 
+    this.offsetY = (Game.h - h)/2; 
 
     this.tile_width = Math.floor(w/this.square);
     this.tile_height = Math.floor(h/this.square);
@@ -24,17 +27,19 @@ var Puzzle = function(game, pic, square) {
     this.pieces = [];
     this.background = [];
 		this.piece_list = {};
+
+    //Setup Background Game Board
     for (var i = 0; i < this.square;i++) {
       for (var j = 0; j < this.square;j++) {
-        this.background.push(this.makeBox(100+j*this.tile_width, 100+i*this.tile_height,this.tile_width, this.tile_height));
+        this.background.push(this.makeBox(this.offsetX+j*this.tile_width, this.offsetY+i*this.tile_height,this.tile_width, this.tile_height));
 			}
 		}
 
+    //Draw Pieces except the top-left corner
     for (var i = 0; i < this.square;i++) {
       for (var j = 0; j < this.square;j++) {
-				
 				if ((i !== 0) || (j !== 0)) {
-					var piece = new PuzzlePiece(this.game, 100+j*this.tile_width, 100+i*this.tile_height, j, i, this.tile_width, this.tile_height,pic);
+					var piece = new PuzzlePiece(this.game, this.offsetX+j*this.tile_width, this.offsetY+i*this.tile_height, j, i, this.tile_width, this.tile_height,pic);
 					piece.events.onInputUp.add(this.movePiece, this);
 					this.piece_list[j+'_'+i] = piece;
           this.pieces.push(piece);
@@ -42,7 +47,6 @@ var Puzzle = function(game, pic, square) {
 
       }
     }
-		// console.log(this.piece_list);
 
 };
 
@@ -72,47 +76,51 @@ Puzzle.prototype = {
 
 		return box;
   },
+  scramble: function(moves) {
+    var moves = moves || 5;
+    return moves;
+  },
 	movePiece: function(piece) {
     if (this.solved) {return;}
-		// console.log((piece.j)+'_'+piece.i);
-		// console.log(this.piece_list[(piece.j-1)+'_'+piece.i]);
 
 		if (this.piece_list[(piece.j-1)+'_'+piece.i] === undefined && (piece.j-1) >= 0) {
-			console.log('left');
+			// console.log('left');
 			this.piece_list[piece.j+'_'+piece.i] = undefined;
 			piece.j -= 1;
 			this.piece_list[piece.j+'_'+piece.i] = piece;
-			var pos = 100+piece.j*piece.width; 
+			var pos = this.offsetX+piece.j*piece.width; 
 			this.game.add.tween(piece).to({x: pos},500).start();
 		}else if(this.piece_list[(piece.j+1)+'_'+piece.i] === undefined && (piece.j+1) < this.square) {
-			console.log('right');
+			// console.log('right');
 			this.piece_list[piece.j+'_'+piece.i] = undefined;
 			piece.j += 1;
 			this.piece_list[piece.j+'_'+piece.i] = piece;
-			var pos = 100+piece.j*piece.width; 
+			var pos = this.offsetX+piece.j*piece.width; 
 			this.game.add.tween(piece).to({x: pos},500).start();
 		}else if(this.piece_list[piece.j+'_'+(piece.i-1)] === undefined && (piece.i-1) >=0) {
-			console.log('above');
+			// console.log('above');
 			this.piece_list[piece.j+'_'+piece.i] = undefined;
 			piece.i -= 1;
 			this.piece_list[piece.j+'_'+piece.i] = piece;
-			var pos = 100+piece.i*piece.height; 
+			var pos = this.offsetY+piece.i*piece.height; 
 			this.game.add.tween(piece).to({y: pos},500).start();
 		}else if(this.piece_list[piece.j+'_'+(piece.i+1)] === undefined && (piece.i+1) < this.square) {
-			console.log('below');
+			// console.log('below');
 			this.piece_list[piece.j+'_'+piece.i] = undefined;
 			piece.i += 1;
 			this.piece_list[piece.j+'_'+piece.i] = piece;
-			var pos = 100+piece.i*piece.height; 
+			var pos = this.offsetY+piece.i*piece.height; 
 			this.game.add.tween(piece).to({y: pos},500).start();
 		}
-    var c = this.checkWin();
-    console.log('win '+ c);
+
     if (this.checkWin()) {
-      var piece = new PuzzlePiece(this.game, 100, 100, 0, 0, this.tile_width, this.tile_height,this.pic);
+      // Wait for piece to finish moving then Add the missing piece if puzzle is solved
+      this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function() { 
+        var piece = new PuzzlePiece(this.game, this.offsetX, this.offsetY, 0, 0, this.tile_width, this.tile_height,this.pic);
+      }, this);
+
       this.solved = true;
     }
-
 
 	},
   checkWin: function() {

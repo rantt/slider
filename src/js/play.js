@@ -30,8 +30,10 @@ Game.Play.prototype = {
 
 		// this.puzzle = new Puzzle(this.game, 'bg1', 5);
 		// this.puzzle.destroy();
-		// this.puzzle = new Puzzle(this.game, 'cameras', 4);
-		this.puzzle = new Puzzle(this.game, 'amsterdam', 3);
+		// this.puzzle = new Puzzle(this.game, 'cameras', 3);
+		this.puzzle = new Puzzle(this.game, 'cat', 3);
+    this.puzzle.scramble();
+		// this.puzzle = new Puzzle(this.game, 'amsterdam', 3);
 
     // // Music
     // this.music = this.game.add.sound('music');
