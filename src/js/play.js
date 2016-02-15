@@ -31,7 +31,9 @@ Game.Play.prototype = {
 		// this.puzzle = new Puzzle(this.game, 'bg1', 5);
 		// this.puzzle.destroy();
 		// this.puzzle = new Puzzle(this.game, 'cameras', 3);
-		this.puzzle = new Puzzle(this.game, 'cat', 5);
+		this.puzzle = new Puzzle(this.game, 'cat', 4);
+    // this.puzzle.scramble(20);
+
     // this.puzzle.scramble(5, ['down','right']);
 		// this.puzzle = new Puzzle(this.game, 'amsterdam', 3);
 
@@ -54,9 +56,14 @@ Game.Play.prototype = {
     this.twitterButton.visible = false;
   },
   update: function() {
+    if (this.game.input.activePointer.isDown && this.puzzle.scrambling === false) {
+      this.puzzle.scramble(30);
+    }
+
+    // console.log(this.puzzle.tweening);
       // this.game.input.onUp.add(function() {
       //   if (this.puzzle.solved == false && this.puzzle.scrambled == false) {
-      //     this.puzzle.scramble(5, ['down','right']);
+      //     this.puzzle.scramble(20);
       //   }
       // },this);
 

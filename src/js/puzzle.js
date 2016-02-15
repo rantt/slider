@@ -9,15 +9,13 @@ var Puzzle = function(game, pic, square) {
 
     this.solved = false;
     this.scrambled = false;
-    this.tweening = false;
-    this.rndAmount = 1;
+    this.scrambling = false;
     this.tileSpeed = 500;
-    this.scrambleSpeed = 10;
+    this.scrambleSpeed = 5;
 
     //load source image to get image height/width properties
     var src_image = this.game.add.image(0, 0, pic);
     src_image.visible = false;
-
 
     var w = src_image.width;
     var h = src_image.height;
@@ -52,11 +50,6 @@ var Puzzle = function(game, pic, square) {
       }
     }
 
-    this.game.time.events.add(Phaser.Timer.SECOND * 1, function() { 
-      this.scramble(this.square*2, ['down','right']);
-    }, this);
-
-
 };
 
 Puzzle.prototype = Puzzle.prototype.constructor = Puzzle;
@@ -81,84 +74,55 @@ Puzzle.prototype = {
 
 		return box;
   },
-  scramble: function(moves, directions, gap, lastmove) {
+  scramble: function(moves, gap, lastaction) {
     if (moves == 0) {
+      this.speed = this.tileSpeed;
+      this.tweening = false;
       this.scrambled = true;
       return;
     }
-    // if (this.movedPieces() == moves) {
-    //   this.speed = this.tileSpeed;
-    //   this.scrambled = true;
-    //   return;
-    // }
-    this.speed = this.scrambleSpeed;
 
+    this.scrambling = true;
+    this.speed = this.scrambleSpeed;
     var gap = gap || {'i':0, 'j': 0};
+    var directions = ['up', 'down', 'left', 'right']; 
     var piece;
 
-    console.log('directions'+directions);
-    console.log(moves);
-    console.log(gap);
-    if (directions[0] == undefined   || directions == undefined) {
-      console.log('here');
-      var directions = ['up', 'down', 'left', 'right']; 
-    }
-
-    if (lastmove !== undefined) {
-      if (lastmove === 'up') {directions.indexOf('down');}
-      if (lastmove === 'down') {directions.indexOf('up');}
-      if (lastmove === 'right') {directions.indexOf('left');}
-      if (lastmove === 'left') {directions.indexOf('right');}
-      console.log('lm'+lastmove);
+    if (lastaction !== undefined) {
+      if(lastaction === 'up'){directions.indexOf('down');}
+      if(lastaction === 'down'){directions.indexOf('up');}
+      if(lastaction === 'right'){directions.indexOf('left');}
+      if(lastaction === 'left'){directions.indexOf('right');}
     }
     
     var rd = Math.floor(Math.random() * directions.length);
-    var rs = directions.splice(rd,1);
-    // var rs =  directions[rd];
-    console.log(rs);
+    var rs =  directions[rd];
 
     if(rs == 'up') {
-      console.log('up');
       piece = this.piece_list[gap.j+'_'+(gap.i-1)];
     }else if(rs == 'down') {
-      console.log('down');
       piece = this.piece_list[gap.j+'_'+(gap.i+1)];
     }else if(rs == 'left') {
-      console.log('left');
       piece = this.piece_list[(gap.j-1)+'_'+gap.i];
     }else if(rs == 'right') {
-      console.log('right');
       piece = this.piece_list[(gap.j+1)+'_'+gap.i];
     }
 
-      if (piece !== undefined) {
-        console.log('moving piece');
-        gap.i = piece.i;
-        gap.j = piece.j;
+    if (piece !== undefined) {
+      gap.i = piece.i;
+      gap.j = piece.j;
 
-        this.game.time.events.add(Phaser.Timer.SECOND * this.scrambleSpeed/100, function() { 
-          this.movePiece(piece);
-          moves--;
-          // directions = ['up','down','right','left'];
-          this.scramble(moves, directions, gap, rs);
-        }, this);
-      }else {
-        directions.indexOf(rs);
-        this.scramble(moves, directions, gap, rs);
-      } 
-  },
-  movedPieces: function() {
-    var count = 0;
-    this.pieces.forEach(function(piece) {
-      if (piece.i !== piece.initialI || piece.j !== piece.initialJ) {
-        count++;
-      }
-    },this);
-    return count;
+      this.game.time.events.add(Phaser.Timer.SECOND * (this.scrambleSpeed)/100, function() { 
+        this.movePiece(piece);
+        moves--;
+        this.scramble(moves, gap, rs);
+      }, this);
+    }else {
+      this.scramble(moves, gap, rs);
+    } 
   },
 	movePiece: function(piece) {
-    if (this.solved || this.tweening) {return;}
-    this.tweening = true;
+    if (this.solved) {return;}
 
 		if (this.piece_list[(piece.j-1)+'_'+piece.i] === undefined && (piece.j-1) >= 0) {
 			// console.log('left');
@@ -166,28 +130,28 @@ Puzzle.prototype = {
 			piece.j -= 1;
 			this.piece_list[piece.j+'_'+piece.i] = piece;
 			var pos = this.offsetX+piece.j*piece.width; 
-			this.game.add.tween(piece).to({x: pos},this.speed, 'Linear', true).onComplete.add(function() {this.tweening=false},this);
+			this.game.add.tween(piece).to({x: pos},this.speed).start();
 		}else if(this.piece_list[(piece.j+1)+'_'+piece.i] === undefined && (piece.j+1) < this.square) {
 			// console.log('right');
 			this.piece_list[piece.j+'_'+piece.i] = undefined;
 			piece.j += 1;
 			this.piece_list[piece.j+'_'+piece.i] = piece;
 			var pos = this.offsetX+piece.j*piece.width; 
-			this.game.add.tween(piece).to({x: pos},this.speed, 'Linear', true).onComplete.add(function() {this.tweening=false},this);
+			this.game.add.tween(piece).to({x: pos},this.speed).start();
 		}else if(this.piece_list[piece.j+'_'+(piece.i-1)] === undefined && (piece.i-1) >=0) {
 			// console.log('above');
 			this.piece_list[piece.j+'_'+piece.i] = undefined;
 			piece.i -= 1;
 			this.piece_list[piece.j+'_'+piece.i] = piece;
 			var pos = this.offsetY+piece.i*piece.height; 
-			this.game.add.tween(piece).to({y: pos},this.speed, 'Linear', true).onComplete.add(function() {this.tweening=false},this);
+			this.game.add.tween(piece).to({y: pos},this.speed).start();
 		}else if(this.piece_list[piece.j+'_'+(piece.i+1)] === undefined && (piece.i+1) < this.square) {
 			// console.log('below');
 			this.piece_list[piece.j+'_'+piece.i] = undefined;
 			piece.i += 1;
 			this.piece_list[piece.j+'_'+piece.i] = piece;
 			var pos = this.offsetY+piece.i*piece.height; 
-			this.game.add.tween(piece).to({y: pos},this.speed, 'Linear', true).onComplete.add(function() {this.tweening=false},this);
+			this.game.add.tween(piece).to({y: pos},this.speed).start();
 		}
 
     if (this.checkWin() && this.scrambled) {
