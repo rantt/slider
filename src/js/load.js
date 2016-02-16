@@ -49,18 +49,21 @@ Game.Load.prototype = {
 
     //Load button for twitter
     this.game.load.image('twitter','assets/images/twitter.png');
+    this.game.load.image('easy','assets/images/easy.png');
+    this.game.load.image('normal','assets/images/normal.png');
+    this.game.load.image('hard','assets/images/hard.png');
+    this.game.load.atlasXML('startbtn', 'assets/images/startbtn.png','assets/atlas/startbtn.xml'); 
 
-    this.game.load.image('bg1', 'assets/images/bg1.jpg');
-    this.game.load.image('cameras', 'assets/images/cameras.jpg');
-    this.game.load.image('amsterdam', 'assets/images/amsterdam.png');
     this.game.load.image('cat', 'assets/images/cat.png');
+    this.game.load.image('prehistory', 'assets/images/prehistory.png');
+    this.game.load.image('skyscrapers', 'assets/images/skyscrapers.png');
+    this.game.load.image('boxing', 'assets/images/boxing.png');
 
     // Music Track
     // this.game.load.audio('music','soundtrack.mp3');
 
   },
   create: function() {
-    // this.game.state.start('Menu');
-    this.game.state.start('Play');
+    this.game.state.start('Menu');
   }
 };

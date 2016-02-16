@@ -158,6 +158,7 @@ Puzzle.prototype = {
       // Wait for piece to finish moving then Add the missing piece if puzzle is solved
       this.game.time.events.add(Phaser.Timer.SECOND * 0.5, function() { 
         var piece = new PuzzlePiece(this.game, this.offsetX, this.offsetY, 0, 0, this.tile_width, this.tile_height,this.pic);
+        this.pieces.push(piece);
       }, this);
 
       this.solved = true;
