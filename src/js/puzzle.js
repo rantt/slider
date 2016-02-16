@@ -125,28 +125,24 @@ Puzzle.prototype = {
     if (this.solved) {return;}
 
 		if (this.piece_list[(piece.j-1)+'_'+piece.i] === undefined && (piece.j-1) >= 0) {
-			// console.log('left');
 			this.piece_list[piece.j+'_'+piece.i] = undefined;
 			piece.j -= 1;
 			this.piece_list[piece.j+'_'+piece.i] = piece;
 			var pos = this.offsetX+piece.j*piece.width; 
 			this.game.add.tween(piece).to({x: pos},this.speed).start();
 		}else if(this.piece_list[(piece.j+1)+'_'+piece.i] === undefined && (piece.j+1) < this.square) {
-			// console.log('right');
 			this.piece_list[piece.j+'_'+piece.i] = undefined;
 			piece.j += 1;
 			this.piece_list[piece.j+'_'+piece.i] = piece;
 			var pos = this.offsetX+piece.j*piece.width; 
 			this.game.add.tween(piece).to({x: pos},this.speed).start();
 		}else if(this.piece_list[piece.j+'_'+(piece.i-1)] === undefined && (piece.i-1) >=0) {
-			// console.log('above');
 			this.piece_list[piece.j+'_'+piece.i] = undefined;
 			piece.i -= 1;
 			this.piece_list[piece.j+'_'+piece.i] = piece;
 			var pos = this.offsetY+piece.i*piece.height; 
 			this.game.add.tween(piece).to({y: pos},this.speed).start();
 		}else if(this.piece_list[piece.j+'_'+(piece.i+1)] === undefined && (piece.i+1) < this.square) {
-			// console.log('below');
 			this.piece_list[piece.j+'_'+piece.i] = undefined;
 			piece.i += 1;
 			this.piece_list[piece.j+'_'+piece.i] = piece;
@@ -166,13 +162,6 @@ Puzzle.prototype = {
 
 	},
   checkWin: function() {
-    //For Each loop will return for each iteration, use For loop instead
-    // this.pieces.forEach(function(piece) {
-    //   console.log(piece.i !== piece.initialI || piece.j !== piece.initialJ);
-    //   if (piece.i !== piece.initialI || piece.j !== piece.initialJ) {
-    //     return false;
-    //   }
-    // }, this);  
     for(var x=0; x < this.pieces.length;x++) {
       if (this.pieces[x].i !== this.pieces[x].initialI || this.pieces[x].j !== this.pieces[x].initialJ) {
         return false;

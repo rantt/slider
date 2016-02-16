@@ -1,8 +1,6 @@
 var PuzzlePiece = function(game, x, y, j, i, width, height, pic) {
 
   this.game = game;
-  // this.initialX = x;
-  // this.initialY = y;
 
   var img = this.game.make.bitmapData(width, height);
   area = new Phaser.Rectangle(j*width, i*height, width, height);
