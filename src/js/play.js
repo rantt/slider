@@ -13,6 +13,10 @@ Game.Play.prototype = {
   create: function() {
     this.game.world.setBounds(0, 0 ,Game.w ,Game.h);
 
+		this.menu_button = this.game.add.button(0,0,this.makeBox(200,50), this.gotoMenu,this);
+		this.menu_button.tint = 0xff00ff;
+		this.game.add.bitmapText(50,10,'minecraftia','Menu',24);
+
     this.game.stage.backgroundColor = '#2d2d2d';
 
     if (difficulty === 'easy') {
@@ -26,12 +30,7 @@ Game.Play.prototype = {
       this.moves = 30;
     }
 
-    this.puzzles = ['cat','prehistory','skyscrapers','boxing'];
-    this.won = false;
-
-    this.level = 0;
-
-		this.puzzle = new Puzzle(this.game, this.puzzles[this.level], this.square);
+		this.puzzle = new Puzzle(this.game, level, this.square);
 
     this.playAgainText = this.game.add.bitmapText(Game.w/2 , Game.h/2, 'minecraftia','Click To Start',48);
     this.playAgainText.anchor.set(0.5);
@@ -43,43 +42,27 @@ Game.Play.prototype = {
     this.twitterButton.visible = true;
   },
   update: function() {
-    if (this.won === false) {
+    if (this.puzzle.solved === false) {
       if (this.game.input.activePointer.isDown && this.puzzle.scrambling === false) {
         this.playAgainText.setText('');
         this.puzzle.scramble(this.moves);
       }
-
-      if (this.puzzle.solved === true) {
-        this.playAgainText.setText('Click To Continue');
-        this.game.world.bringToTop(this.playAgainText);
-
-        this.game.input.onUp.add(this.nextLevel,this);
-
-      }
     }else {
-      this.playAgainText.setText('YOU WIN! Click To Play Again.');
-      this.game.world.bringToTop(this.playAgainText);
-
-       if (this.game.input.activePointer.isDown) {
-        this.game.state.start('Menu');
-      }
-     
-    }
-
-  },
-  nextLevel: function() {
-    if (this.puzzle.solved === true) {
-      this.level += 1;
-      console.log('here'+this.level);
-      if (this.level < this.puzzles.length) {
-       this.puzzle.destroy();
-        this.puzzle = new Puzzle(this.game, this.puzzles[this.level], this.square);
-        this.playAgainText.setText('Click To Start');
+        this.game.input.onUp.add(this.gotoMenu,this);
+        this.playAgainText.setText('GREAT JOB!\nClick to Play Again.');
         this.game.world.bringToTop(this.playAgainText);
-      }else {
-        this.won = true;
-      }
-    }
+    } 
+  },
+  gotoMenu: function() {
+    this.game.state.start('Gallery');
+  },
+  makeBox: function(x,y) {
+    var bmd = this.game.add.bitmapData(x, y);
+    bmd.ctx.beginPath();
+    bmd.ctx.rect(0, 0, x, y);
+    bmd.ctx.fillStyle = '#fff';
+    bmd.ctx.fill();
+    return bmd;
   },
   twitter: function() {
     //Popup twitter window to post highscore
@@ -87,11 +70,7 @@ Game.Play.prototype = {
     var twitter_name = 'rantt_';
     var tags = [''];
 
-    if (this.level >= this.puzzles.length) {
-      window.open('http://twitter.com/share?text=I+beat+Slider+on+'+difficulty+'+mode+playing+Slider.+See+if+you+can+beat+it.+at&via='+twitter_name+'&url='+game_url+'&hashtags='+tags.join(','), '_blank');
-    }else {
-      window.open('http://twitter.com/share?text=I+made+it+to+lvl+'+(this.level+1)+'+on+'+difficulty+'+mode+playing+Slider.+See+if+you+can+beat+it.+at&via='+twitter_name+'&url='+game_url+'&hashtags='+tags.join(','), '_blank');
-    }
+    window.open('http://twitter.com/share?text=Relax+with+a+fun+sliding+puzzle.+at&via='+twitter_name+'&url='+game_url+'&hashtags='+tags.join(','), '_blank');
   },
 
 };

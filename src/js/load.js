@@ -54,10 +54,9 @@ Game.Load.prototype = {
     this.game.load.image('hard','assets/images/hard.png');
     this.game.load.atlasXML('startbtn', 'assets/images/startbtn.png','assets/atlas/startbtn.xml'); 
 
-    this.game.load.image('cat', 'assets/images/cat.png');
-    this.game.load.image('prehistory', 'assets/images/prehistory.png');
-    this.game.load.image('skyscrapers', 'assets/images/skyscrapers.png');
-    this.game.load.image('boxing', 'assets/images/boxing.png');
+    for(var i = 1; i < 5;i++) {
+      this.game.load.image(i.toString(), 'assets/images/'+i.toString()+'.png');
+    }
 
     // Music Track
     // this.game.load.audio('music','soundtrack.mp3');

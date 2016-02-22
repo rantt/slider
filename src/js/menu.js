@@ -49,7 +49,8 @@ Game.Menu.prototype =  {
 
     },
     begin: function() {
-        this.game.state.start('Play');
+        // this.game.state.start('Play');
+        this.game.state.start('Gallery');
     },
     difficultySelect: function(button) {
       this.difficultyButtons.forEach(function(btn) {
