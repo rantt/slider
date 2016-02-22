@@ -7,14 +7,14 @@ var PuzzlePiece = function(game, x, y, j, i, width, height, pic) {
   img.copyRect(pic, area, 0, 0);
   img.update();
   
-  var b = game.add.sprite(x, y, img);
-  b.inputEnabled = true;
-	b.i = i;
-	b.j = j;
-  b.initialJ = j;
-  b.initialI = i;
+  var tile_sprite = game.add.sprite(x, y, img);
+  tile_sprite.inputEnabled = true;
+	tile_sprite.i = i;
+	tile_sprite.j = j;
+  tile_sprite.initialJ = j;
+  tile_sprite.initialI = i;
 
-  return b;
+  return tile_sprite;
 
 };
 
